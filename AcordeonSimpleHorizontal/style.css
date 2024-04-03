@@ -1,0 +1,48 @@
+*,
+::before,
+::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-inline: 5rem;
+}
+.none {
+  display: none;
+}
+.acordeon {
+  margin: 5rem auto;
+  display: flex;
+  width: 90%;
+  height: 20rem;
+}
+/* Aplicar fondo cyan al primer y tercer hijo */
+.acordeon > .item:nth-child(1),
+.acordeon > .item:nth-child(3) {
+    background-color: cyan;
+}
+
+/* Aplicar fondo gris al segundo y cuarto hijo */
+.acordeon > .item:nth-child(2),
+.acordeon > .item:nth-child(4) {
+    background-color: grey;
+}
+
+/* Aplicar fondo rojo al quinto hijo */
+.acordeon > .item:nth-child(5) {
+    background-color: red;
+}
+
+.item {
+  width: 40%;
+  flex: 1;
+  padding: 3rem 1rem;
+}
+
+.item.active{
+    flex: 2; /* Expandir el item activo */
+}
