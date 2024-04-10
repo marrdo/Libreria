@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FadeIn</title>
+
+    <style>
+        /* Estilos CSS */
+        *,
+        ::before,
+        ::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        figure>img {
+            width: 100%;
+        }
+
+        figure {
+            margin: 0 auto;
+        }
+
+        main {
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        section {
+            max-width: 1500px;
+            margin-inline: auto;
+            overflow-y: scroll;
+            height: 30rem;
+            width: 80%;
+        }
+
+        .container {
+            width: 100%;
+            height: 20rem;
+            padding: 3rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity .3s ease-in-out, transform 1s ease-in-out;
+            transform: translateY(100%);
+        }
+
+        /*        /* Efecto de entrada desde la izquierda para contenedores impares 
+        .container:nth-child(odd) {
+            transform: translateX(-100%);
+        }
+
+         Efecto de entrada desde la derecha para contenedores pares 
+        .container:nth-child(even) {
+            transform: translateX(100%);
+        } */
+
+        .fadeIn {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        <section>
+            <!-- Contenedores de texto e imágenes -->
+            <div class="container fadeIn">
+                <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Deserunt earum consequatur, necessitatibus
+                    recusandae amet nulla doloribus dignissimos quod atque architecto aperiam sed reiciendis veritatis
+                    sequi eos delectus omnis quia maxime!</p>
+                <figure><img src="https://picsum.photos/200/300" alt=""></figure>
+            </div>
+            <div class="container">
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque recusandae necessitatibus eius
+                    laboriosam earum laborum fuga perspiciatis numquam similique. Expedita sint enim, quasi provident
+                    doloribus incidunt laboriosam cumque facilis? Exercitationem?</p>
+                <figure><img src="https://picsum.photos/200/300" alt=""></figure>
+            </div>
+            <div class="container">
+                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Maiores ducimus ipsa tempore nihil vero
+                    cum, accusamus doloribus voluptates voluptatem rem, sint similique non quis nemo, consequatur quas
+                    impedit at soluta.</p>
+                <figure><img src="https://picsum.photos/200/300" alt=""></figure>
+            </div>
+            <div class="container">
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi nesciunt at soluta? Quisquam autem,
+                    vero dicta a omnis eos nesciunt modi nihil ipsam. Assumenda sint doloribus velit saepe iure commodi.
+                </p>
+                <figure><img src="https://picsum.photos/200/300" alt=""></figure>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Seleccionar todos los contenedores y la sección
+        let containers = document.querySelectorAll('.container');
+        let section = document.querySelector('section');
+
+        // Calcular la altura de la sección
+        let sectionHeight = section.offsetHeight;
+
+        // Definir un intervalo inicial para cambiar automáticamente cada 5 segundos
+        let interval = setInterval(toggleFadeIn, 5000);
+
+        // Agregar un evento de desplazamiento a la sección
+        section.addEventListener('scroll', () => {
+            // Reiniciar el intervalo si se realiza un desplazamiento manual
+            clearInterval(interval);
+            interval = setInterval(toggleFadeIn, 5000);
+            // Iterar sobre cada contenedor
+            containers.forEach(container => {
+                // Calcular la posición superior e inferior del contenedor relativo a la parte superior de la sección
+                let containerTop = container.offsetTop - section.scrollTop;
+                let containerBottom = containerTop + container.offsetHeight;
+                // Verificar si el contenedor está dentro del área visible de la sección
+                if ((containerTop >= 0 && containerTop <= sectionHeight) || (containerBottom >= 0 && containerBottom <= sectionHeight)) {
+                    // Si está dentro, agregar la clase de fadeIn
+                    container.classList.add('fadeIn');
+                } else {
+                    // Si no está dentro, eliminar la clase de fadeIn
+                    container.classList.remove('fadeIn');
+                }
+            });
+        });
+
+        // Definir un índice para realizar un bucle a través de los contenedores
+        let index = 0;
+
+        // Función para alternar la clase fadeIn cada 5 segundos
+        function toggleFadeIn() {
+            // Quitar la clase fadeIn del contenedor actual
+            containers[index].classList.remove('fadeIn');
+            // Incrementar el índice para apuntar al siguiente contenedor
+            index++;
+            // Si el índice es mayor que la longitud de los contenedores, volver al primer contenedor
+            if (index >= containers.length) {
+                index = 0;
+            }
+            // Añadir la clase fadeIn al siguiente contenedor después de 100ms
+            setTimeout(() => {
+                containers[index].classList.add('fadeIn');
+                // Desplazar la pantalla hacia el contenedor que se muestra
+                containers[index].scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+        }
+    </script>
+    <script>
+        // Seleccionar todos los contenedores y la sección
+        /*  let containers = document.querySelectorAll('.container');
+         let section = document.querySelector('section');
+  */
+        // Calcular la altura de la sección
+        /*  let sectionHeight = section.offsetHeight; */
+
+        // Agregar un evento de desplazamiento a la sección
+        /*      section.addEventListener('scroll', () => {
+                 // Iterar sobre cada contenedor
+                 containers.forEach(container => {
+                     // Calcular la posición superior e inferior del contenedor relativo a la parte superior de la sección
+                     let containerTop = container.offsetTop - section.scrollTop;
+                     console.log(`Distancia desde el borde superior al elemento padre mas cercano del container: ${container.offsetTop} px`);
+                     console.log(`Numero de pixeles que ha sido desplazado el container desde la parte superior: ${section.scrollTop} px`);
+                     console.log(`Posicion superior del contenedor: ${containerTop} px`);
+                     let containerBottom = containerTop + container.offsetHeight;
+                     console.log(`Posicion inferior del contenedor: ${containerBottom} px`);
+                     console.log(`Altura total del contenedor, incluyendo su contenido, padding, y el borde, pero excluyendo el margen y la barra de desplazamiento: ${container.offsetHeight}`);
+     
+                     // Verificar si el contenedor está dentro del área visible de la sección
+                     if ((containerTop >= 0 && containerTop <= sectionHeight) || (containerBottom >= 0 && containerBottom <= sectionHeight)) {
+                         // Si está dentro, agregar la clase de fadeIn
+                         container.classList.add('fadeIn');
+                     } else {
+                         // Si no está dentro, eliminar la clase de fadeIn
+                         container.classList.remove('fadeIn');
+                     }
+                 });
+             });
+     
+             // Definir un índice para realizar un bucle a través de los contenedores
+             let index = 0;
+     
+             // Función para alternar la clase fadeIn cada 5 segundos
+             function toggleFadeIn() {
+                 // Quitar la clase fadeIn del contenedor actual
+                 containers[index].classList.remove('fadeIn');
+                 // Incrementar el índice para apuntar al siguiente contenedor
+                 index++;
+                 // Si el índice es mayor que la longitud de los contenedores, volver al primer contenedor
+                 if (index >= containers.length) {
+                     index = 0;
+                 }
+                 // Añadir la clase fadeIn al siguiente contenedor después de 100ms
+                 setTimeout(() => {
+                     containers[index].classList.add('fadeIn');
+                     // Desplazar la pantalla hacia el contenedor que se muestra
+                     containers[index].scrollIntoView({ behavior: 'smooth' });
+                 }, 100);
+             }
+     
+             // Ejecutar la función toggleFadeIn cada 5 segundos
+             setInterval(toggleFadeIn, 5000);
+      */
+        /*      Apuntes
+             offsetTop: Esta propiedad devuelve la distancia en píxeles del borde superior del elemento 
+             actual al borde superior del elemento padre más cercano que no sea posicionado de manera 
+             estática(es decir, un elemento posicionado de manera relativa, absoluta o fijo).En resumen, 
+             te da la distancia vertical desde la parte superior del elemento hasta el borde superior de su elemento padre más cercano.
+     
+             scrollTop: Esta propiedad devuelve el número de píxeles que un elemento ha sido desplazado 
+             verticalmente desde la parte superior.Si el elemento no es desplazable(por ejemplo, si su 
+             contenido no excede su tamaño), scrollTop será 0. Pero si el contenido es más grande que 
+             el tamaño del elemento y has desplazado el contenido hacia abajo, entonces scrollTop será mayor que 0.
+     
+             offsetHeight: Esta propiedad devuelve la altura del elemento, incluyendo el padding, pero 
+             sin incluir el borde, la barra de desplazamiento vertical ni el margen.En resumen, es la 
+             altura total del elemento, incluyendo su contenido y padding, pero sin contar el borde, 
+             la barra de desplazamiento vertical ni el margen. 
+            
+             offsetTop: Es la distancia vertical desde el borde superior del container hasta el borde superior del section.
+             scrollTop: Si el contenido dentro del section es más grande que su altura, scrollTop es la cantidad de píxeles que se ha desplazado hacia abajo.
+             offsetHeight: Es la altura total del container, incluyendo su contenido y padding, pero sin contar el borde, la barra de desplazamiento vertical ni el margen.
+     
+            Por ejemplo, si offsetTop del primer container es 100px, eso significa que el primer container está 100px por 
+            debajo del borde superior del section. Si scrollTop es 50px, significa que has desplazado el 
+            contenido del section hacia abajo en 50px. Y si offsetHeight del container es 200px, significa 
+            que la altura total del container es de 200px, incluyendo su contenido y padding, pero sin 
+            contar el borde, la barra de desplazamiento vertical ni el margen.
+
+            La propiedad offsetHeight proporciona la altura total de un elemento, 
+            incluyendo el contenido, padding, y el borde, pero excluyendo el margen y la barra de desplazamiento. 
+            Esta propiedad te da la altura total de un elemento en píxeles.
+             */
+    </script>
+</body>
+
+</html>
